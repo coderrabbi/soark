@@ -6,8 +6,6 @@ const MiddleContainer = () => {
     <div className=" ">
       <PostCard />
       <Card />
-      <Card />
-      <Card />
     </div>
   );
 };

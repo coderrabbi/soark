@@ -1,10 +1,56 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { GrEmoji } from "react-icons/gr";
+import { AuthContext } from "../../context/AuthProvider";
+// import { toast } from "react-hot-toast";
+
 const PostCard = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user);
+  const [img, setImg] = useState("");
+  const handleChange = (e) => {
+    setImg(e.target.files[0]);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", img);
+    const url = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMAGE_HOST_KEY}`;
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          const postData = {
+            postImg: data.data.url,
+            userImg: user.photoURL,
+            postDeccription: e.target.description.value,
+            totalLikes: "",
+            totalComments: "",
+          };
+          fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(postData),
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              console.log(result);
+            });
+        }
+      });
+  };
+
   return (
     <div className="p-6 flex justify-center ">
-      <div className="flex flex-col shadow-lg gap-2 border-[1px] border-black p-6 rounded-xl lg:w-[80%] w-full">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col shadow-lg gap-2 border-[1px] border-black p-6 rounded-xl lg:w-[80%] w-full"
+      >
         <div>
           <div className="flex gap-2">
             <div>
@@ -17,6 +63,7 @@ const PostCard = () => {
 
             <textarea
               type="text"
+              name="description"
               className="border-[0.75px] rounded-md w-full border-gray-500 p-3"
               placeholder="whats in your mind?"
             />
@@ -29,7 +76,12 @@ const PostCard = () => {
                 className="cursor-pointer text-[22px]"
                 title="photo"
               />
-              <input type="file" class="hidden" />
+              <input
+                onChange={handleChange}
+                name="file"
+                type="file"
+                className="hidden"
+              />
             </label>
             <GrEmoji className="cursor-pointer text-[22px]" />
           </div>
@@ -40,7 +92,7 @@ const PostCard = () => {
             Post
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

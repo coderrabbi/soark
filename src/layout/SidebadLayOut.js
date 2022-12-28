@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import Footer from "../common/Footer/Footer";
 import Navbar from "../common/Navbar/Navbar";
@@ -9,6 +9,7 @@ import { CgProfile } from "react-icons/cg";
 import { BiSearch } from "react-icons/bi";
 import styles from "../style";
 import Home from "../pages/Home/Home";
+import { AuthContext } from "../context/AuthProvider";
 const SidebadLayOut = () => {
   const sidebarLinks = [
     {
@@ -30,14 +31,9 @@ const SidebadLayOut = () => {
 
       id: 3,
     },
-    {
-      name: "Log out",
-      path: "/about",
-      icon: <RiLogoutBoxRLine />,
-
-      id: 3,
-    },
   ];
+
+  const { logOut } = useContext(AuthContext);
 
   return (
     <div>
@@ -80,7 +76,15 @@ const SidebadLayOut = () => {
                           {link.name}
                         </NavLink>
                       ))}
-
+                      <NavLink
+                        to="/home"
+                        onClick={logOut}
+                        className="group flex items-center px-2 py-2 leading-6 font-semibold rounded-full gap-2 text-xl
+                     text-black hover:bg-gray-900 hover:text-white"
+                      >
+                        <RiLogoutBoxRLine />
+                        Logout
+                      </NavLink>
                       <button className="bg-gray-900 w-48 mt-5 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full">
                         Post
                       </button>

@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 const Profile = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user);
+  const [userData, setUserData] = useState("");
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => setUserData(data))
+      .catch((err) => console.log(err));
+  }, [user.email]);
+
   return (
     <div>
       <div class="max-w-2xl mx-auto">
@@ -12,10 +23,10 @@ const Profile = () => {
               alt=""
             />
             <div className="flex  flex-col">
-              <p class="font-serif font-semibold">Golam Rabbi</p>
-              <span class="font-serif ">golamrabbi@gmail.com</span>
-              <span class="text-sm text-gray-400">Barisal,Bangladesh</span>
-              <span class="text-sm text-gray-400">Govt BM college</span>
+              <p class="font-serif font-semibold">{user.displayName}</p>
+              <span class="font-serif ">{userData.email}</span>
+              <span class="text-sm text-gray-400">{userData.address}</span>
+              <span class="text-sm text-gray-400">{userData.university}</span>
             </div>
           </div>
 
