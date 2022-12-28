@@ -1,31 +1,63 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiComment } from "react-icons/bi";
 import { AuthContext } from "../../context/AuthProvider";
+import axios from "axios";
 const Card = () => {
   const { user } = useContext(AuthContext);
   const [post, setPost] = useState([]);
+  const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [userInfo, setUserInfo] = useState(null);
+  const handleLike = (id) => {
+    setLike(!like);
+    if (like) {
+      setLikeCount(1);
+    } else {
+      setLikeCount(0);
+    }
+    const activity = {
+      userId: userInfo._id,
+      likeCount,
+    };
+    axios
+      .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${id}`, {
+        activity,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost`)
       .then((res) => res.json())
       .then((data) => setPost(data))
       .catch((err) => console.log(err));
-  }, [post]);
+  }, [user]);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => setUserInfo(data));
+  }, [user?.email]);
+
   return (
     <div>
-      {post.map((p, index) => (
-        <div key={index} className="bg-gray-100 px-14 py-8">
+      {post.map((p) => (
+        <div key={p._id} className="bg-gray-100 px-14 py-8">
           <div className="bg-white border rounded-sm ">
             <div className="flex items-center px-4 py-3">
-              <img className=" w-8 rounded-full" src={p.userImg} alt="" />
+              <img
+                className=" w-10 h-10 rounded-full"
+                src={p.userImage}
+                alt=""
+              />
               <div className="ml-3 ">
                 <span className="text-sm font-semibold antialiased block leading-tight">
                   {user.displayName}
                 </span>
                 <span className="text-gray-600 text-xs block">
-                  Asheville, North Carolina
+                  {p.createdAt}
                 </span>
                 <p>{p.postDeccription.slice(0, 50)}...</p>
               </div>
@@ -37,12 +69,16 @@ const Card = () => {
             />
             <div className="flex items-center justify-between mx-4 mt-3 mb-2">
               <div className="flex gap-5">
-                <AiOutlineHeart className="text-[30px] cursor-pointer" />
+                <AiOutlineHeart
+                  onClick={() => handleLike(p._id)}
+                  className="text-[30px] cursor-pointer"
+                />
                 <BiComment className="text-[30px] cursor-pointer" />
               </div>
             </div>
+
             <div className="font-semibold text-sm mx-4 mt-2 mb-4">
-              {p.totalLikes}
+              {p.userLikes}
             </div>
             <span className="px-4"> {p.totalComments} Comments</span>
             <div className="flex gap-3 items-center pb-4 px-4">

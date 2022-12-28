@@ -18,6 +18,7 @@ const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userImg, setUserImg] = useState(null);
   const [loading, setLoading] = useState(true);
   const createUser = (email, password) => {
     setLoading(true);
@@ -70,6 +71,8 @@ const AuthProvider = ({ children }) => {
     auth,
     googleProvider,
     setUser,
+    userImg,
+    setUserImg,
   };
 
   return (

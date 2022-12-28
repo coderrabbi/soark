@@ -1,18 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { GrEmoji } from "react-icons/gr";
 import { AuthContext } from "../../context/AuthProvider";
+import { toast } from "react-hot-toast";
 // import { toast } from "react-hot-toast";
-
+import moment from "moment";
 const PostCard = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
   const [img, setImg] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
   const handleChange = (e) => {
     setImg(e.target.files[0]);
   };
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => setUserInfo(data));
+  }, [user?.email]);
   const handleSubmit = (e) => {
     e.preventDefault();
+    const form = e.target;
     const formData = new FormData();
     formData.append("image", img);
     const url = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMAGE_HOST_KEY}`;
@@ -25,10 +33,12 @@ const PostCard = () => {
         if (data) {
           const postData = {
             postImg: data.data.url,
-            userImg: user.photoURL,
+            image: user.photoURL,
+            userImage: userInfo.image,
             postDeccription: e.target.description.value,
-            totalLikes: "",
-            totalComments: "",
+            userLikes: [],
+            userId: userInfo._id,
+            createdAt: moment().format("LLL"),
           };
           fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost`, {
             method: "POST",
@@ -39,7 +49,8 @@ const PostCard = () => {
           })
             .then((res) => res.json())
             .then((result) => {
-              console.log(result);
+              toast.success("successfully Posted");
+              form.reset();
             });
         }
       });
@@ -55,8 +66,8 @@ const PostCard = () => {
           <div className="flex gap-2">
             <div>
               <img
-                className="w-[50px] rounded-full"
-                src="https://pbs.twimg.com/profile_images/1494937378179653632/Vu5-upyx_reasonably_small.jpg"
+                className="w-12 h-12 rounded-full"
+                src={user.photoURL ? user.photoURL : userInfo?.image}
                 alt=""
               />
             </div>

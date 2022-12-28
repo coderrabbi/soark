@@ -1,40 +1,64 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../SocialLogin/SocialLogin";
 const Register = () => {
-  const { createUser, setLoading, updateUser } = useContext(AuthContext);
+  const { createUser, setLoading, updateUser, setUserImg } =
+    useContext(AuthContext);
+
+  const [img, setImg] = useState("");
+  const handleChange = (e) => {
+    setImg(e.target.files[0]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    const userName = form.userName.value;
-    const university = form.university.value;
-    const address = form.address.value;
 
-    createUser(email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        setLoading(false);
-        const userInfo = {
-          displayName: form.userName.value,
-        };
+    const formData = new FormData();
+    formData.append("image", img);
+    const url = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMAGE_HOST_KEY}`;
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          setUserImg(data.data.url);
+          const form = e.target;
+          const name = form.fullName.value;
+          const email = form.email.value;
+          const password = form.password.value;
+          const userName = form.userName.value;
+          const image = data.data.url;
+          const university = form.university.value;
+          const address = form.address.value;
 
-        updateUser(userInfo)
-          .then(() => {
-            saveUser(userName, email, university, address);
-          })
-          .catch((error) => console.log(error));
-        toast.success("user created successfully");
+          createUser(email, password)
+            .then((result) => {
+              const user = result.user;
+              console.log(user);
+              setLoading(false);
+              const userInfo = {
+                displayName: form.userName.value,
+              };
 
-        form.reset();
-      })
-      .catch((error) => console.log(error));
-    const saveUser = (userName, email, university, address) => {
-      const user = { userName, email, university, address };
+              updateUser(userInfo)
+                .then(() => {
+                  saveUser(userName, email, university, address, image, name);
+                })
+                .catch((error) => console.log(error));
+              toast.success("user created successfully");
+
+              form.reset();
+            })
+            .catch((error) => console.log(error));
+        }
+      });
+
+    const saveUser = (userName, email, university, address, image, name) => {
+      const user = { userName, email, university, address, image, name };
       fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users`, {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -71,9 +95,24 @@ const Register = () => {
             <form onSubmit={handleSubmit} className="w-full px-10">
               <div className="text-left flex flex-col  gap-3 pt-3">
                 <input
+                  type="file"
+                  name="file"
+                  onChange={handleChange}
+                  required
+                  className="p-2 rounded-md bg-gray-100  shadow-md focus:outline-none  border-gray-900"
+                />
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Full Name"
+                  required
+                  className="p-2 rounded-md bg-gray-100 shadow-md focus:outline-none  border-gray-900"
+                />
+                <input
                   type="text"
                   name="userName"
                   placeholder="User Name"
+                  required
                   className="p-2 rounded-md bg-gray-100  shadow-md focus:outline-none  border-gray-900"
                 />
 
@@ -81,24 +120,28 @@ const Register = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
+                  required
                   className="p-2 rounded-md bg-gray-100 shadow-md focus:outline-none  border-gray-900"
                 />
                 <input
                   type="text"
                   name="address"
                   placeholder="Address"
+                  required
                   className="p-2 rounded-md bg-gray-100  shadow-md focus:outline-none  border-gray-900"
                 />
                 <input
                   type="text"
                   name="university"
                   placeholder="University"
+                  required
                   className="p-2 rounded-md bg-gray-100  shadow-md focus:outline-none  border-gray-900"
                 />
                 <input
                   type="password"
                   placeholder="Password"
                   name="password"
+                  required
                   className="block p-2 mt-3 rounded-md bg-gray-100 shadow-md focus:outline-none  border-gray-900"
                 />
               </div>
