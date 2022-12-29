@@ -24,7 +24,7 @@ const AllPost = () => {
     } else {
       setLikeCount(0);
     }
-    console.log(likeCount);
+
     const activity = { userId: userInfo._id, likes: likeCount };
     axios
       .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${id}`, {
