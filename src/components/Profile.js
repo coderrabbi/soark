@@ -24,7 +24,9 @@ const Profile = () => {
               alt=""
             />
             <div className="flex  flex-col">
-              <p className="font-serif font-semibold">{userData.name}</p>
+              <p className="font-serif font-semibold">
+                {userData.name ? userData.name : user.displayName}
+              </p>
               <span className="font-serif ">{userData.email}</span>
               <span className="text-sm text-gray-400">{userData.address}</span>
               <span className="text-sm text-gray-400">

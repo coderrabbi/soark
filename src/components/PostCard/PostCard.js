@@ -8,7 +8,7 @@ import moment from "moment";
 const PostCard = () => {
   const { user } = useContext(AuthContext);
   const [img, setImg] = useState("");
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState("");
   const handleChange = (e) => {
     setImg(e.target.files[0]);
   };
@@ -51,8 +51,10 @@ const PostCard = () => {
           })
             .then((res) => res.json())
             .then((result) => {
-              toast.success("successfully Posted");
-              form.reset();
+              if (result) {
+                toast.success("successfully Posted");
+                form.reset();
+              }
             });
         }
       });
@@ -76,6 +78,7 @@ const PostCard = () => {
 
             <textarea
               type="text"
+              required
               name="description"
               className="border-[0.75px] rounded-md w-full border-gray-500 p-3"
               placeholder="whats in your mind?"
@@ -92,6 +95,7 @@ const PostCard = () => {
               <input
                 onChange={handleChange}
                 name="file"
+                required
                 type="file"
                 className="hidden"
               />

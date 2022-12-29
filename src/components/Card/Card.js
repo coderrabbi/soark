@@ -22,7 +22,7 @@ const Card = () => {
   const sortedArray = post.reverse();
   return (
     <div>
-      {sortedArray.map((p) => (
+      {sortedArray.slice(0, 3).map((p) => (
         <SingleCard p={p} userInfo={userInfo} />
       ))}
       <div className="text-center py-4">

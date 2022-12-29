@@ -41,7 +41,7 @@ const PostComments = ({ post }) => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments`)
       .then((res) => res.json())
       .then((data) => setDb(data));
-  }, [comments]);
+  }, [db]);
   return (
     <div>
       <span className="px-4"> {filterComment.length} Comments</span>

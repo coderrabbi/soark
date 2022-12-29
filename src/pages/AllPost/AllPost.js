@@ -60,7 +60,7 @@ const AllPost = () => {
             <PostComments post={post} />
 
             <div>
-              <Link to="/">
+              <Link to={`/postdetails/${post._id}`}>
                 <span>show all comments</span>
               </Link>
             </div>

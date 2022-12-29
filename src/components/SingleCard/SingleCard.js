@@ -6,8 +6,7 @@ import moment from "moment";
 import avater from "../../assets/avater.png";
 import { Link } from "react-router-dom";
 const SingleCard = ({ p }) => {
-  const { user, userData, postDetails, setPostDetails } =
-    useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { email, photoURL, displayName } = user;
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState({});
@@ -127,7 +126,7 @@ const SingleCard = ({ p }) => {
             </div>
           ))}
           <div>
-            <Link to="/postdetails">
+            <Link to={`/postdetails/${p._id}`}>
               <span>show all comments</span>
             </Link>
           </div>

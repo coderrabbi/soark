@@ -110,7 +110,7 @@ const Navbar = () => {
                       index === navLinks.length - 1 ? `mr-0` : `mr-10`
                     }`}
                   >
-                    <a href={`#${item.id}`}>{item.name}</a>
+                    <Link to={item.path}>{item.name}</Link>
                   </li>
                 );
               })}
@@ -139,7 +139,7 @@ const Navbar = () => {
                         index === navLinks.length - 1 ? `mr-0` : `mb-4`
                       }`}
                     >
-                      <a href={`#${item.id}`}>{item.name}</a>
+                      <Link to={item.path}>{item.name}</Link>
                     </li>
                   );
                 })}

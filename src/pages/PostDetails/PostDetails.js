@@ -2,22 +2,22 @@ import axios from "axios";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
-
-const PostDetails = ({ p }) => {
-  const { user, userData } = useContext(AuthContext);
-
+import avater from "../../assets/avater.png";
+const PostDetails = () => {
+  const { user } = useContext(AuthContext);
+  const singlePost = useLoaderData();
   const { email, photoURL, displayName } = user;
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState({});
   const [db, setDb] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments`)
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments/`)
       .then((res) => res.json())
       .then((data) => setDb(data));
   }, [user]);
-  const filterComment = db?.filter((i) => i.reviewId === p._id);
+  const filterComment = db?.filter((i) => i.reviewId === singlePost._id);
 
   const handleLike = (id) => {
     setLikeCount(likeCount + 1);
@@ -33,11 +33,14 @@ const PostDetails = ({ p }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${p._id}`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(comments),
-    })
+    fetch(
+      `${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${singlePost._id}`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(comments),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {});
 
@@ -50,48 +53,47 @@ const PostDetails = ({ p }) => {
       ...comments,
       email,
       photoURL,
-
       displayName,
       timeStamp: moment().format("LLL"),
       [name]: value,
-      reviewId: p._id,
+      reviewId: singlePost._id,
     });
   };
 
   return (
     <div>
       <div>
-        <div key={p._id} className="bg-gray-100 px-14 py-8">
+        <div key={singlePost._id} className="bg-gray-100 px-14 py-8">
           <div className="bg-white border rounded-sm ">
             <div className="flex items-center px-4 py-3">
               <img
                 className=" w-10 h-10 rounded-full"
-                src={p.userImage}
+                src={singlePost.userImage}
                 alt=""
               />
               <div className="ml-3 ">
                 <span className="text-sm font-semibold antialiased block leading-tight">
-                  {user.displayName}
+                  {singlePost.userName}
                 </span>
                 <span className="text-gray-600 text-xs block">
-                  {p.createdAt}
+                  {singlePost.createdAt}
                 </span>
-                <p>{p.postDeccription}...</p>
+                <p>{singlePost.postDeccription}...</p>
               </div>
             </div>
             <img
               className="h-[300px] object-cover w-full cover"
-              src={p.postImg}
+              src={singlePost.postImg}
               alt=""
             />
             <div className="flex items-center justify-between mx-4 mt-3 mb-2">
               <div className="flex gap-3 items-center">
                 <AiOutlineHeart
-                  onClick={() => handleLike(p._id)}
+                  onClick={() => handleLike(singlePost._id)}
                   className="text-[30px] cursor-pointer"
                 />
                 <div className="font-semibold text-sm  ">
-                  {p.userLikes} likes
+                  {singlePost.userLikes} likes
                 </div>
               </div>
             </div>
@@ -111,15 +113,14 @@ const PostDetails = ({ p }) => {
                 add
               </button>
             </form>
-
             <span className="px-4"> {filterComment.length} Comments</span>
-            {filterComment.slice(0, 3).map((cmnt) => (
+            {filterComment.map((cmnt) => (
               <div key={cmnt._id} className="flex flex-col  pb-4 px-4">
                 <div className="flex">
                   <div>
                     <img
                       className="w-8 rounded-full"
-                      src={cmnt.photoURL ? cmnt.photoURL : ""}
+                      src={cmnt.photoURL ? cmnt.photoURL : avater}
                       alt=""
                     />
                   </div>
@@ -135,11 +136,6 @@ const PostDetails = ({ p }) => {
                 </div>
               </div>
             ))}
-            <div>
-              <Link to="/">
-                <span>show all comments</span>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
