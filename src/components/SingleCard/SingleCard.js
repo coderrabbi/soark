@@ -6,22 +6,20 @@ import moment from "moment";
 import avater from "../../assets/avater.png";
 import { Link } from "react-router-dom";
 const SingleCard = ({ p }) => {
-  const { user, userData } = useContext(AuthContext);
-  console.log(userData);
+  const { user, userData, postDetails, setPostDetails } =
+    useContext(AuthContext);
   const { email, photoURL, displayName } = user;
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState({});
   const [db, setDb] = useState([]);
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(3);
+
   useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_SERVER_BASE_URL}/comments?page=${page}&size=${size}`
-    )
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments`)
       .then((res) => res.json())
       .then((data) => setDb(data));
-  }, [page, size]);
+  }, [comments]);
   const filterComment = db?.filter((i) => i.reviewId === p._id);
+
   const handleLike = (id) => {
     setLikeCount(likeCount + 1);
 
@@ -42,9 +40,7 @@ const SingleCard = ({ p }) => {
       body: JSON.stringify(comments),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
+      .then((data) => {});
 
     e.target.reset();
   };
@@ -55,14 +51,13 @@ const SingleCard = ({ p }) => {
       ...comments,
       email,
       photoURL,
-
       displayName,
       timeStamp: moment().format("LLL"),
       [name]: value,
       reviewId: p._id,
     });
   };
-  console.log(comments);
+
   return (
     <div>
       <div key={p._id} className="bg-gray-100 px-14 py-8">
@@ -71,7 +66,7 @@ const SingleCard = ({ p }) => {
             <img className=" w-10 h-10 rounded-full" src={p.userImage} alt="" />
             <div className="ml-3 ">
               <span className="text-sm font-semibold antialiased block leading-tight">
-                {user.displayName}
+                {p.userName}
               </span>
               <span className="text-gray-600 text-xs block">{p.createdAt}</span>
               <p>{p.postDeccription}...</p>
@@ -108,12 +103,11 @@ const SingleCard = ({ p }) => {
             </button>
           </form>
 
-          <span className="px-4"> {p.totalComments} Comments</span>
-          {filterComment.map((cmnt) => (
+          <span className="px-4"> {filterComment.length} Comments</span>
+          {filterComment.slice(0, 3).map((cmnt) => (
             <div key={cmnt._id} className="flex flex-col  pb-4 px-4">
               <div className="flex">
                 <div>
-                  {" "}
                   <img
                     className="w-8 rounded-full"
                     src={cmnt.photoURL ? cmnt.photoURL : avater}
@@ -133,8 +127,7 @@ const SingleCard = ({ p }) => {
             </div>
           ))}
           <div>
-            <Link to="/">
-              {" "}
+            <Link to="/postdetails">
               <span>show all comments</span>
             </Link>
           </div>

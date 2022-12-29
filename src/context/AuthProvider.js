@@ -18,6 +18,7 @@ const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [postDetails, setPostDetails] = useState({});
   const [userImg, setUserImg] = useState(null);
   const [loading, setLoading] = useState(true);
   const createUser = (email, password) => {
@@ -74,6 +75,8 @@ const AuthProvider = ({ children }) => {
     setUser,
     userImg,
     setUserImg,
+    setPostDetails,
+    postDetails,
   };
 
   return (

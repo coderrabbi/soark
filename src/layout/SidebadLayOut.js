@@ -8,7 +8,6 @@ import { TfiLayoutMediaLeftAlt } from "react-icons/tfi";
 import { CgProfile } from "react-icons/cg";
 import { BiSearch } from "react-icons/bi";
 import styles from "../style";
-import Home from "../pages/Home/Home";
 import { AuthContext } from "../context/AuthProvider";
 const SidebadLayOut = () => {
   const sidebarLinks = [
@@ -42,7 +41,6 @@ const SidebadLayOut = () => {
         <div className="md:w-[70%] mx-auto w-[100%]">
           <div className="lg:hidden block">
             <Outlet />
-            <Home />
           </div>
           <div className="hidden lg:block  ">
             <div className="drawer drawer-mobile">
@@ -77,7 +75,7 @@ const SidebadLayOut = () => {
                         </NavLink>
                       ))}
                       <NavLink
-                        to="/home"
+                        to="/login"
                         onClick={logOut}
                         className="group flex items-center px-2 py-2 leading-6 font-semibold rounded-full gap-2 text-xl
                      text-black hover:bg-gray-900 hover:text-white"

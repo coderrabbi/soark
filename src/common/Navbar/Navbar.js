@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import close from "../../assets/close.svg";
@@ -8,6 +8,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { TfiLayoutMediaLeftAlt } from "react-icons/tfi";
 import { CgProfile } from "react-icons/cg";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { AuthContext } from "../../context/AuthProvider";
 const navLinks = [
   {
     name: "Home",
@@ -50,16 +51,11 @@ const sidebarLinks = [
 
     id: 3,
   },
-  {
-    name: "Log out",
-    path: "/",
-    icon: <RiLogoutBoxRLine />,
-
-    id: 3,
-  },
 ];
+
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
+  const { logOut } = useContext(AuthContext);
   return (
     <div>
       <div class="w-full lg:hidden block">
@@ -81,6 +77,14 @@ const Navbar = () => {
                 <span class="tab tab-home block text-xs"> {link.name}</span>
               </NavLink>
             ))}
+            <NavLink
+              onClick={logOut}
+              to="/login"
+              className="w-full flex flex-col justify-center items-center focus:text-teal-500 hover:text-gray-900  text-center pt-2 pb-1"
+            >
+              <RiLogoutBoxRLine />
+              <span class="tab tab-home block text-xs">log out</span>
+            </NavLink>
           </div>
         </section>
       </div>
@@ -91,7 +95,7 @@ const Navbar = () => {
             <Link to="/">
               <img
                 src={logo}
-                alt="hoobank"
+                alt="social spark"
                 className=" bg-white rounded-full w-10"
               />
             </Link>

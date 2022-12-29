@@ -11,7 +11,7 @@ const Profile = () => {
       .then((res) => res.json())
       .then((data) => setUserData(data))
       .catch((err) => console.log(err));
-  }, [user.email]);
+  }, [user]);
 
   return (
     <div>

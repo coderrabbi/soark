@@ -34,6 +34,7 @@ const PostCard = () => {
           const postData = {
             postImg: data.data.url,
             image: user.photoURL,
+            userName: user.displayName,
             userImage: userInfo.image,
             postDeccription: e.target.description.value,
             userLikes: 0,

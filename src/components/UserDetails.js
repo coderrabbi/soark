@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const UserDetails = ({ details }) => {
@@ -6,10 +7,11 @@ const UserDetails = ({ details }) => {
   const [name, setName] = useState(details.name);
   const [address, setAddress] = useState(details.address);
   const [university, setUniversity] = useState(details.university);
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const updateUser = { name, address, university };
-    console.log(updateUser);
+
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`, {
       method: "PUT",
       headers: {
@@ -18,7 +20,11 @@ const UserDetails = ({ details }) => {
       body: JSON.stringify(updateUser),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        if (data) {
+          navigate("/profile");
+        }
+      })
       .catch((err) => console.log(err));
   };
   return (
