@@ -30,6 +30,7 @@ const AuthProvider = ({ children }) => {
   const updateUser = (userInfo) => {
     return updateProfile(auth.currentUser, userInfo);
   };
+
   useEffect(() => {
     const unsbscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);

@@ -85,9 +85,11 @@ const SidebadLayOut = () => {
                         <RiLogoutBoxRLine />
                         Logout
                       </NavLink>
-                      <button className="bg-gray-900 w-48 mt-5 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full">
-                        Post
-                      </button>
+                      <NavLink to="allpost">
+                        <button className="bg-gray-900 w-48 mt-5 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full">
+                          All Post
+                        </button>
+                      </NavLink>
                     </nav>
                   </div>
                 </div>
