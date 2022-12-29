@@ -8,13 +8,27 @@ import { AuthContext } from "../../context/AuthProvider";
 
 const AllPost = () => {
   const allPost = useLoaderData();
+  const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const { user } = useContext(AuthContext);
+  const [userInfo, setUserInfo] = useState("");
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => setUserInfo(data));
+  }, [user?.email]);
   const handleLike = (id) => {
-    setLikeCount(likeCount + 1);
+    setLike(!like);
+    if (like) {
+      setLikeCount(1);
+    } else {
+      setLikeCount(0);
+    }
+    console.log(likeCount);
+    const activity = { userId: userInfo._id, likes: likeCount };
     axios
       .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${id}`, {
-        likeCount,
+        activity,
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -53,7 +67,7 @@ const AllPost = () => {
                   className="text-[30px] cursor-pointer"
                 />
                 <div className="font-semibold text-sm  ">
-                  {post.userLikes} likes
+                  {/* {post.userLikes} likes */}
                 </div>
               </div>
             </div>

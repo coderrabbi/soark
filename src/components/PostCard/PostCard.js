@@ -37,7 +37,7 @@ const PostCard = () => {
             userName: user.displayName,
             userImage: userInfo.image,
             postDeccription: e.target.description.value,
-            userLikes: 0,
+            userLikes: [],
             comments: "",
             userId: userInfo._id,
             createdAt: moment().format("LLL"),
