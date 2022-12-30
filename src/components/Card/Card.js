@@ -12,13 +12,13 @@ const Card = () => {
       .then((res) => res.json())
       .then((data) => setPost(data))
       .catch((err) => console.log(err));
-  }, [post]);
+  }, []);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
-  }, [user?.email]);
+  }, [user.email]);
   const sortedArray = post.reverse();
   return (
     <div>

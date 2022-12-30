@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 const SingleCard = ({ p }) => {
   const { user } = useContext(AuthContext);
   const { email, photoURL, displayName } = user;
-  const [like, setLike] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState({});
   const [db, setDb] = useState([]);
 
@@ -18,25 +16,20 @@ const SingleCard = ({ p }) => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
-  }, [user?.email]);
+  }, []);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments`)
       .then((res) => res.json())
       .then((data) => setDb(data));
-  }, [db]);
+  }, []);
   const filterComment = db?.filter((i) => i.reviewId === p._id);
+  const totalLikes = p.userLikes.reduce((a, b) => a + b.like, 0);
 
   const handleLike = (id) => {
-    setLike(!like);
-    if (like) {
-      setLikeCount(1);
-    } else {
-      setLikeCount(0);
-    }
-    console.log(likeCount);
     const activity = {
-      userId: userInfo._id,
-      likes: likeCount,
+      userEmail: userInfo.email,
+      likes: 1,
+      post: p,
     };
     axios
       .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${id}`, {
@@ -98,7 +91,7 @@ const SingleCard = ({ p }) => {
                 onClick={() => handleLike(p._id)}
                 className="text-[30px] cursor-pointer"
               />
-              <div className="font-semibold text-sm  "> likes</div>
+              <div className="font-semibold text-sm  ">{totalLikes} likes</div>
             </div>
           </div>
           <form onSubmit={handleSubmit} className="flex w-1/2 flex-col gap-2">
