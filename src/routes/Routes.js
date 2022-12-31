@@ -51,7 +51,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/allpost",
-        loader: () => fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost`),
+        loader: () => fetch(`https://social-spark.vercel.app/allpost`),
         element: (
           <PrivetRoute>
             <AllPost />
@@ -62,9 +62,7 @@ export const routes = createBrowserRouter([
         path: "/postdetails/:id",
 
         loader: ({ params }) =>
-          fetch(
-            `${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${params.id}`
-          ),
+          fetch(`https://social-spark.vercel.app/allpost/${params.id}`),
         element: (
           <PrivetRoute>
             <PostDetails />
