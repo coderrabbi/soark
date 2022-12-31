@@ -12,7 +12,7 @@ const UserDetails = ({ details }) => {
     e.preventDefault();
     const updateUser = { name, address, university };
 
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`, {
+    fetch(`https://social-spark.vercel.app/users/${user.email}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

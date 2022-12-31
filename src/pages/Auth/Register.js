@@ -17,7 +17,7 @@ const Register = () => {
 
     const formData = new FormData();
     formData.append("image", img);
-    const url = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMAGE_HOST_KEY}`;
+    const url = `https://api.imgbb.com/1/upload?key=4e617bff24500ed4669c6e33ea216faa`;
     fetch(url, {
       method: "POST",
       body: formData,
@@ -59,7 +59,7 @@ const Register = () => {
 
     const saveUser = (userName, email, university, address, image, name) => {
       const user = { userName, email, university, address, image, name };
-      fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users`, {
+      fetch(`https://social-spark.vercel.app/users`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(user),

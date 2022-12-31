@@ -8,14 +8,14 @@ const Card = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost`)
+    fetch(`https://social-spark.vercel.app/allpost`)
       .then((res) => res.json())
       .then((data) => setPost(data))
       .catch((err) => console.log(err));
   }, [post]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+    fetch(`https://social-spark.vercel.app/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
   }, [user.email]);

@@ -14,7 +14,7 @@ const PostCard = () => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+    fetch(`https://social-spark.vercel.app/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
   }, [user?.email]);
@@ -23,7 +23,7 @@ const PostCard = () => {
     const form = e.target;
     const formData = new FormData();
     formData.append("image", img);
-    const url = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMAGE_HOST_KEY}`;
+    const url = `https://api.imgbb.com/1/upload?key=4e617bff24500ed4669c6e33ea216faa`;
     fetch(url, {
       method: "POST",
       body: formData,
@@ -42,7 +42,7 @@ const PostCard = () => {
             userId: userInfo._id,
             createdAt: moment().format("LLL"),
           };
-          fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost`, {
+          fetch(`https://social-spark.vercel.app/allpost`, {
             method: "POST",
             headers: {
               "content-type": "application/json",

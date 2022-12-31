@@ -11,7 +11,7 @@ const AllPost = () => {
   const [userInfo, setUserInfo] = useState("");
   console.log(process.env.REACT_APP_SERVER_BASE_URL);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
+    fetch(`https://social-spark.vercel.app/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
   }, [user?.email]);
@@ -23,7 +23,7 @@ const AllPost = () => {
       post: post,
     };
     axios
-      .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${post._id}`, {
+      .put(`https://social-spark.vercel.app/allpost/${post._id}`, {
         activity,
       })
       .then((res) => console.log(res))

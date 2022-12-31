@@ -26,7 +26,7 @@ const PostComments = ({ post }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${post._id}`, {
+    fetch(`https://social-spark.vercel.app/allpost/${post._id}`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(comments),
@@ -38,7 +38,7 @@ const PostComments = ({ post }) => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments`)
+    fetch(`https://social-spark.vercel.app/comments`)
       .then((res) => res.json())
       .then((data) => setDb(data));
   }, [db]);

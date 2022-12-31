@@ -17,7 +17,7 @@ const SocialLogin = () => {
         setUser(user);
         const currentUser = { email: user.email };
         if (user.uid) {
-          fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/jwt`, {
+          fetch(`https://social-spark.vercel.app/jwt`, {
             method: "POST",
             headers: {
               "content-type": "application/json",

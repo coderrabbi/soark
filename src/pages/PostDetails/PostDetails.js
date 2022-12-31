@@ -13,7 +13,7 @@ const PostDetails = () => {
   const [comments, setComments] = useState({});
   const [db, setDb] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments/`)
+    fetch(`https://social-spark.vercel.app/comments/`)
       .then((res) => res.json())
       .then((data) => setDb(data));
   }, [user]);
@@ -23,7 +23,7 @@ const PostDetails = () => {
     setLikeCount(likeCount + 1);
 
     axios
-      .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${id}`, {
+      .put(`https://social-spark.vercel.app/allpost/${id}`, {
         likeCount,
       })
       .then((res) => console.log(res))
@@ -33,14 +33,11 @@ const PostDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(
-      `${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${singlePost._id}`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(comments),
-      }
-    )
+    fetch(`https://social-spark.vercel.app/allpost/${singlePost._id}`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(comments),
+    })
       .then((res) => res.json())
       .then((data) => {});
 
