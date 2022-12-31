@@ -66,6 +66,7 @@ const SidebadLayOut = () => {
                     >
                       {sidebarLinks.map((link) => (
                         <NavLink
+                          key={link.id}
                           to={link.path}
                           className="group flex items-center px-2 py-2 leading-6 font-semibold rounded-full gap-2 text-xl
                      text-black hover:bg-gray-900 hover:text-white"
@@ -96,14 +97,14 @@ const SidebadLayOut = () => {
           </div>
         </div>
 
-        <div class="lg:max-w-lg lg:w-[30%] w-full px-5 mx-auto pt-5">
-          <div class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white border-[1px] border-black overflow-hidden">
-            <div class="grid place-items-center h-full w-12 text-gray-300">
+        <div className="lg:max-w-lg lg:w-[30%] w-full px-5 mx-auto pt-5">
+          <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white border-[1px] border-black overflow-hidden">
+            <div className="grid place-items-center h-full w-12 text-gray-300">
               <BiSearch />
             </div>
 
             <input
-              class="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+              className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
               type="text"
               id="search"
               placeholder="Search something.."

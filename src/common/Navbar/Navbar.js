@@ -58,23 +58,24 @@ const Navbar = () => {
   const { logOut } = useContext(AuthContext);
   return (
     <div>
-      <div class="w-full lg:hidden block">
+      <div className="w-full lg:hidden block">
         <section
           id="bottom-navigation"
-          class="md:hidden block fixed inset-x-0 bottom-0 z-10 bg-white shadow"
+          className="md:hidden block fixed inset-x-0 bottom-0 z-10 bg-white shadow"
         />
         <section
           id="bottom-navigation"
-          class="block fixed inset-x-0 bottom-0 z-10 bg-white shadow"
+          className="block fixed inset-x-0 bottom-0 z-10 bg-white shadow"
         >
-          <div id="tabs" class="flex justify-between">
+          <div id="tabs" className="flex justify-between">
             {sidebarLinks.map((link) => (
               <NavLink
+                key={link.id}
                 to={link.path}
                 className="w-full flex flex-col justify-center items-center focus:text-teal-500 hover:text-gray-900  text-center pt-2 pb-1"
               >
                 {link.icon}
-                <span class="tab tab-home block text-xs"> {link.name}</span>
+                <span className="tab tab-home block text-xs"> {link.name}</span>
               </NavLink>
             ))}
             <NavLink
@@ -83,7 +84,7 @@ const Navbar = () => {
               className="w-full flex flex-col justify-center items-center focus:text-teal-500 hover:text-gray-900  text-center pt-2 pb-1"
             >
               <RiLogoutBoxRLine />
-              <span class="tab tab-home block text-xs">log out</span>
+              <span className="tab tab-home block text-xs">log out</span>
             </NavLink>
           </div>
         </section>

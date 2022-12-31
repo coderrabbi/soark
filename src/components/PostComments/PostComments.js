@@ -66,21 +66,23 @@ const PostComments = ({ post }) => {
           </div>
         </div>
       ))}
-      <form onSubmit={handleSubmit} className="flex w-1/2 flex-col gap-2">
-        <textarea
+      <form onSubmit={handleSubmit} className="flex w-1/2  gap-2 px-4 ">
+        <input
           required
           name="comment"
           onChange={handleInputRev}
           type="text"
-          className="border-[1px] border-gray-400 p-3"
+          className="border-[1px] border-gray-400 px-3 py-2"
           placeholder="add comments"
         />
-        <button
-          type="submit"
-          className="bg-gray-900 w-1/3  text-white px-3  rounded-xl"
-        >
-          add
-        </button>
+        <div className="flex items-center">
+          <button
+            type="submit"
+            className="bg-gray-900 py-2 text-white px-3  rounded-xl"
+          >
+            comment
+          </button>
+        </div>
       </form>
     </div>
   );

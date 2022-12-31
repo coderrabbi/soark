@@ -18,7 +18,7 @@ const PostDetails = () => {
       .then((data) => setDb(data));
   }, [user]);
   const filterComment = db?.filter((i) => i.reviewId === singlePost._id);
-
+  const totalLikes = singlePost.userLikes.reduce((a, b) => a + b.like, 0);
   const handleLike = (id) => {
     setLikeCount(likeCount + 1);
 
@@ -93,7 +93,7 @@ const PostDetails = () => {
                   className="text-[30px] cursor-pointer"
                 />
                 <div className="font-semibold text-sm  ">
-                  {singlePost.userLikes} likes
+                  {totalLikes} likes
                 </div>
               </div>
             </div>

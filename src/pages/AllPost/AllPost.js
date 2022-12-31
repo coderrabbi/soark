@@ -8,8 +8,6 @@ import { AuthContext } from "../../context/AuthProvider";
 
 const AllPost = () => {
   const allPost = useLoaderData();
-  const [like, setLike] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
   const { user } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState("");
   useEffect(() => {
@@ -17,17 +15,15 @@ const AllPost = () => {
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
   }, [user?.email]);
-  const handleLike = (id) => {
-    setLike(!like);
-    if (like) {
-      setLikeCount(1);
-    } else {
-      setLikeCount(0);
-    }
 
-    const activity = { userId: userInfo._id, likes: likeCount };
+  const handleLike = (post) => {
+    const activity = {
+      userEmail: userInfo.email,
+      likes: 1,
+      post: post,
+    };
     axios
-      .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${id}`, {
+      .put(`${process.env.REACT_APP_SERVER_BASE_URL}/allpost/${post._id}`, {
         activity,
       })
       .then((res) => console.log(res))
@@ -63,11 +59,11 @@ const AllPost = () => {
             <div className="flex items-center justify-between mx-4 mt-3 mb-2">
               <div className="flex gap-3 items-center">
                 <AiOutlineHeart
-                  onClick={() => handleLike(post._id)}
+                  onClick={() => handleLike(post)}
                   className="text-[30px] cursor-pointer"
                 />
                 <div className="font-semibold text-sm  ">
-                  {/* {post.userLikes} likes */}
+                  {post.userLikes.reduce((a, b) => a + b.like, 0)} likes
                 </div>
               </div>
             </div>

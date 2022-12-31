@@ -10,20 +10,19 @@ const SingleCard = ({ p }) => {
   const { email, photoURL, displayName } = user;
   const [comments, setComments] = useState({});
   const [db, setDb] = useState([]);
-
   const [userInfo, setUserInfo] = useState("");
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => setUserInfo(data));
-  }, []);
+  }, [user.email]);
+  const filterComment = db?.filter((i) => i.reviewId === p._id);
+  const totalLikes = p.userLikes.reduce((a, b) => a + b.like, 0);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comments`)
       .then((res) => res.json())
       .then((data) => setDb(data));
-  }, []);
-  const filterComment = db?.filter((i) => i.reviewId === p._id);
-  const totalLikes = p.userLikes.reduce((a, b) => a + b.like, 0);
+  }, [db]);
 
   const handleLike = (id) => {
     const activity = {

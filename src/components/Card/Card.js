@@ -12,7 +12,7 @@ const Card = () => {
       .then((res) => res.json())
       .then((data) => setPost(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [post]);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
@@ -23,7 +23,7 @@ const Card = () => {
   return (
     <div>
       {sortedArray.slice(0, 3).map((p) => (
-        <SingleCard p={p} userInfo={userInfo} />
+        <SingleCard key={p._id} p={p} userInfo={userInfo} />
       ))}
       <div className="text-center py-4">
         <Link to="/allpost">
