@@ -9,6 +9,7 @@ const AllPost = () => {
   const allPost = useLoaderData();
   const { user } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState("");
+  console.log(process.env.REACT_APP_SERVER_BASE_URL);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users/${user.email}`)
       .then((res) => res.json())

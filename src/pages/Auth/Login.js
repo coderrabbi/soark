@@ -21,20 +21,20 @@ const Login = () => {
         const user = result.user;
         const currentUser = { email: user.email };
         if (user.uid) {
-          // fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/jwt`, {
-          //   method: "POST",
-          //   headers: {
-          //     "content-type": "application/json",
-          //   },
-          //   body: JSON.stringify(currentUser),
-          // })
-          // .then((res) => res.json())
-          // .then((data) => {
-          // localStorage.setItem("user_token", data.token);
-          navigate(from, { replace: true });
-          setLoading(false);
-          toast.success("login successful");
-          // });
+          fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/jwt`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(currentUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              localStorage.setItem("user_token", data.token);
+              navigate(from, { replace: true });
+              setLoading(false);
+              toast.success("login successful");
+            });
         }
       })
       .catch((error) => {
